@@ -1,11 +1,22 @@
+import os
 import uuid
+
 from datetime import date
 from flask import Flask, redirect, render_template, request, url_for
+from werkzeug.utils import secure_filename
+
+
 from DB import client, datastore
 from Auth import auth, db, request_user
-from utils import get_profile_details, get_post_details, get_followers, get_followings, get_users_list
+from utils import get_profile_details, get_post_details, get_followers, get_followings, get_users_list, allowed_file, \
+    get_entities
+
+FOLDER_NAME = 'uploaded_images'
+STATIC_DIR = './static'
+UPLOAD_FOLDER = './static/uploaded_images'
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 today = date.today()
 
 
@@ -39,6 +50,8 @@ def dashboard():
         users_data = get_users_list()
         return render_template("dashboard.html", user_id=request_user["uid"], email=request_user["email"],
                                name=request_user["name"], users_data=users_data)
+    else:
+        return render_template("login.html")
 
 
 # If someone clicks on login, they are redirected to /result
@@ -104,6 +117,7 @@ def register():
                 "profile": True,
                 "user_name": request_user["name"],
                 "email": request_user["email"],
+                "user_image": "",
                 "description": "",
                 "followers": [],
                 "following": []
@@ -129,6 +143,14 @@ def edit_profile():
             description = result.get("description", "")
             followers = result.get("followers")  # HiddenInput
             following = result.get("following")  # HiddenInput
+            last_image = result.get("last_image", None)  # HiddenInput
+            image_file = request.files["image"]
+
+            if image_file and allowed_file(image_file.filename) and str(last_image) != str(image_file):
+                filename = secure_filename(image_file.filename)
+                image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            else:
+                filename = image_file
             
             # Update profile
             post_id = uuid.uuid4()
@@ -138,6 +160,7 @@ def edit_profile():
                 "user_id": request_user["uid"],
                 "profile": True,
                 "user_name": user_name,
+                "user_image": str(filename),
                 "email": email,
                 "description": description,
                 "followers": followers,
@@ -149,6 +172,23 @@ def edit_profile():
             return render_template("create_post.html", profile_detail=profile_details)
     else:
         return redirect(url_for('login'))
+
+
+@app.route("/my-tweets", methods=["GET"])
+def my_tweets():
+    if request_user["is_logged_in"]:
+        data = get_entities(request_user["uid"])
+
+        final_data = list()
+        for obj in data:
+            if obj.get("post_id"):
+                final_data.append(obj)
+            else:
+                continue
+
+        return render_template("my_tweets.html", data=final_data)
+    else:
+        return redirect(url_for('login'))
     
     
 @app.route("/create-post", methods=["POST", "GET"])
@@ -157,7 +197,13 @@ def create_post():
         if request.method == "POST":
             result = request.form
             description = result.get("description", "")
-            image = result.get("image", "")
+            image_file = request.files["image"]
+
+            if image_file and allowed_file(image_file.filename):
+                filename = secure_filename(image_file.filename)
+                image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            else:
+                filename = ""
 
             post_id = uuid.uuid4()
             key = client.key(request_user["name"], post_id)
@@ -167,7 +213,7 @@ def create_post():
                 "user_id": request_user["uid"],
                 "post_id": post_id,
                 "description": description,
-                "image": image,
+                "image": str(filename),
                 "created_on": str(today)
             })
             client.put(entity)
@@ -183,9 +229,16 @@ def edit_post(user_id, post_id):
         if request.method == "POST":
             result = request.form
             description = result.get("description", "")
-            image = result.get("image", "")
             user_name = result.get("user_name")  # HiddenInput
             created_on = result.get("created_on")  # HiddenInput
+            last_image = result.get("last_image")  # HiddenInput
+            image_file = request.files["image"]
+
+            if image_file and allowed_file(image_file.filename) and str(last_image) != str(image_file):
+                filename = secure_filename(image_file.filename)
+                image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            else:
+                filename = image_file
 
             key = client.key(user_id, post_id)
             entity = datastore.Entity(key=key)
@@ -194,7 +247,7 @@ def edit_post(user_id, post_id):
                 "user_id": user_id,
                 "post_id": post_id,
                 "description": description,
-                "image": image,
+                "image": str(filename),
                 "created_on": created_on
             })
             client.put(entity)
@@ -306,4 +359,10 @@ def show_user_profile(user_id):
 
 
 if __name__ == "__main__":
+    UPLOAD_IMAGES_PATH = os.path.join(STATIC_DIR, FOLDER_NAME)
+
+    folder_exists = os.path.isdir(UPLOAD_IMAGES_PATH)
+    if not folder_exists:
+        os.mkdir(UPLOAD_IMAGES_PATH)
+
     app.run(debug=True)
