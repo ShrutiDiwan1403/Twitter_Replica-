@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
+    <title>Sidebar template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+        crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'main.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css') }}">
+
+</head>
+
+<body style="background:#fff;">
+<div class="page-wrapper chiller-theme toggled ">
+  <div class="container">
+    <a id="show-sidebar" class="btn btn-sm btn-dark" href="#"><i class="fas fa-bars"></i></a>
+  <nav id="sidebar" class="sidebar-wrapper">
+    <div class="sidebar-content">
+      <!-- sidebar-search  -->
+      <div class="sidebar-menu">
+        <ul>
+          <li class="sidebar-dropdown">
+            <a href="http://127.0.0.1:5000/dashboard">
+              <i class="fa fa-home"></i>
+              <span>Home</span>
+            </a>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-user"></i>
+              <span>My profile</span>
+            </a>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="http://127.0.0.1:5000/create-post">
+              <i class="fa fa-plus"></i>
+              <span>Add tweet</span>
+            </a>
+          </li>
+
+          <li class="sidebar-dropdown">
+            <a href="http://127.0.0.1:5000/my-tweets">
+              <i class="fa fa-plus"></i>
+              <span>My Tweets</span>
+            </a>
+          </li>
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-list"></i>
+              <span>Followers</span>
+            </a>
+          </li>
+
+          <li class="sidebar-dropdown">
+            <a href="#">
+              <i class="fa fa-list"></i>
+              <span>following</span>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+      <!-- sidebar-menu  -->
+      <a href="http://127.0.0.1:5000/logout" class="back log-out">Logout</a>
+    </div>
+
+  </nav>
+    <main class="page-content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-8">
+            <form method="POST" action="http://127.0.0.1:5000/create-post" enctype="multipart/form-data">
+              <div class="form-group">
+                <label for="description1">Description</label>
+                <textarea class="form-control" id="description1" rows="3" name="description" maxlength="280" placeholder="Write your description here..."></textarea>
+              </div>
+              <div class="form-group">
+                <label><strong>Upload Files</strong></label>
+                <div class="custom-file mb-3">
+                  <input type="file" class="custom-file-input" id="customFile" name="image">
+                  <label class="custom-file-label" for="customFile">Choose file</label>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-info">Submit</button>
+            </form>
+          </div>
+        </div>
+      </div>
+  </main>
+  </div>
+</div>
+<!-- page-wrapper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script>
+      $(".custom-file-input").on("change", function() {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+      });
+    </script>
+</body>
+
+</html>
