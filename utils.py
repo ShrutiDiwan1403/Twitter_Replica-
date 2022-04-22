@@ -67,7 +67,8 @@ def get_tweets(entity_kind):
     data.extend(user_tweets)
 
     user_data = get_profile_details(entity_kind)
-    for obj in user_data.get("following"):
+
+    for obj in list(user_data.get("following").replace("'", "")):
         following_tweets = get_all_tweets(obj.get("user_id"))
         data.extend(following_tweets)
 
