@@ -14,7 +14,7 @@ pip install flask
 
 ## Setting up firebase
 
-1) Go to https://console.firebase.google.com
+1) Go to <https://console.firebase.google.com>
 2) Login/Register your account
 3) Click on add project
 4) Give project name
@@ -29,6 +29,6 @@ pip install flask
 
 ## Additional Info
 
-The server starts by default on http://127.0.0.1:5000/
+The server starts by default on <http://127.0.0.1:5000/>
 
 After successful sign-up, the user name, email and uid are stored in a global dictionary called request_user
