@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 from DB import client, datastore
 from Auth import auth, db, request_user
 from utils import get_profile_details, get_post_details, get_followers, get_followings, get_users_list, allowed_file, \
-    get_entities
+    get_tweets, get_entities
 
 FOLDER_NAME = 'uploaded_images'
 STATIC_DIR = './static'
@@ -48,8 +48,9 @@ def signup():
 def dashboard():
     if request_user["is_logged_in"]:
         users_data = get_users_list()
+        tweets_data = get_tweets(request_user["uid"])
         return render_template("dashboard.html", user_id=request_user["uid"], email=request_user["email"],
-                               name=request_user["name"], users_data=users_data)
+                               name=request_user["name"], users_data=users_data, tweets_data=tweets_data)
     else:
         return render_template("login.html")
 
@@ -186,7 +187,7 @@ def my_tweets():
             else:
                 continue
 
-        return render_template("my_tweets.html", data=final_data)
+        return render_template("list.html", data=final_data)
     else:
         return redirect(url_for('login'))
     
@@ -205,18 +206,19 @@ def create_post():
             else:
                 filename = ""
 
-            post_id = uuid.uuid4()
-            key = client.key(request_user["name"], post_id)
+            post_id = str(uuid.uuid4())
+            key = client.key(request_user["uid"], post_id)
             entity = datastore.Entity(key=key)
             entity.update({
                 "user_name": request_user["name"],
-                "user_id": request_user["uid"],
+                "user_id": str(request_user["uid"]),
                 "post_id": post_id,
                 "description": description,
                 "image": str(filename),
                 "created_on": str(today)
             })
             client.put(entity)
+            return redirect(url_for('dashboard'))
         else:
             return render_template("create_post.html")
     else:
