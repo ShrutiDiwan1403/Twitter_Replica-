@@ -1,6 +1,13 @@
 from DB import client
 from Auth import db, request_user
 
+ALLOWED_EXTENSIONS = set(list(['png', 'jpg']))
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def get_users_list():
     all_users = db.child("users").get()
