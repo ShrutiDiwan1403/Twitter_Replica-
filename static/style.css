@@ -401,12 +401,12 @@
 
 
 
-.sidebar-dropdown a {font-size: 24px;}
+.sidebar-dropdown a {font-size: 22px;}
 .text-sec {display: inline-block;width: 88%;}
 
 .text-sec p {margin: 0;}
 
-.sidebar-dropdown {margin-bottom: 30px; margin-right:20px;}
+.sidebar-dropdown {margin-bottom: 12px; margin-right:20px;}
 
 a.back.log-out {
     border-radius: 30px;
@@ -424,3 +424,12 @@ a.name:hover {text-decoration: none;}
 .btn-sec a {width: 25%;padding: 10px;}
 
 .btn-sec {text-align: right;}
+
+.sidebar-menu.user-list {
+    height: 300px;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin-top:10px;
+}
+
+.sidebar-menu.user-list li a {padding-left: 10px !important;}
