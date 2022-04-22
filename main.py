@@ -151,10 +151,10 @@ def edit_profile():
                 filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
-                filename = image_file
+                filename = last_image
             
             # Update profile
-            post_id = uuid.uuid4()
+            post_id = str(uuid.uuid4())
             key = client.key(request_user["uid"], post_id)
             entity = datastore.Entity(key=key)
             entity.update({
@@ -168,9 +168,12 @@ def edit_profile():
                 "following": following
             })
             client.put(entity)
+
+            # profile_details = get_profile_details(request_user["uid"])
+            # return render_template("my_profile.html", profile_detail=profile_details)
         else:
             profile_details = get_profile_details(request_user["uid"])
-            return render_template("create_post.html", profile_detail=profile_details)
+            return render_template("my_profile.html", profile_detail=profile_details)
     else:
         return redirect(url_for('login'))
 
@@ -240,10 +243,12 @@ def edit_post(user_id, post_id):
                 filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
-                filename = image_file
+                filename = last_image
 
             key = client.key(user_id, post_id)
             entity = datastore.Entity(key=key)
+            print(request.files["image"])
+            print(filename)
             entity.update({
                 "user_name": user_name,
                 "user_id": user_id,
@@ -253,6 +258,7 @@ def edit_post(user_id, post_id):
                 "created_on": created_on
             })
             client.put(entity)
+            return redirect(url_for('my_tweets'))
         else:
             post_details = get_post_details(post_id)
             return render_template("edit_post.html", post_detail=post_details)
@@ -328,7 +334,7 @@ def delete_post(post_id):
         key = client.key(request_user["uid"], post_id)
         entity = datastore.Entity(key=key)
         client.put(entity)
-        # return redirect as per need
+        return redirect(url_for('my_tweets'))
     else:
         return redirect(url_for('login'))
 
