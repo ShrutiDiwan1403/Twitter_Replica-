@@ -1,10 +1,12 @@
 # Python-Firebase-Flask login/register web-app
 
 ## Features
+
 1) Login/Sign up - Hosted on firebase
-3) Based on Python-Flask
+2) Based on Python-Flask
 
 ## Requirements
+
 ```bash
 pip install pyrebase4
 pip install flask
