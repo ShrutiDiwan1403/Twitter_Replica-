@@ -6,13 +6,44 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
-    <title>Sidebar template</title>
+    <title>My profile</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'main.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'style.css') }}">
+    <style>/* ! tailwindcss v3.0.0 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-size:100%;line-height:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}[type=button],[type=reset],[type=submit],button{-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]{display:none}.border-2{--tw-border-opacity:1;border-color:rgb(229 231 235 / var(--tw-border-opacity))}.shadow-lg{--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000}.mx-auto{margin-left:auto;margin-right:auto}.mt-16{margin-top:4rem}.-mt-16{margin-top:-4rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.flex{display:flex}.h-20{height:5rem}.w-20{width:5rem}.max-w-md{max-width:28rem}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.rounded-lg{border-radius:0.5rem}.rounded-full{border-radius:9999px}.border-2{border-width:2px}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity))}.object-cover{object-fit:cover}.px-8{padding-left:2rem;padding-right:2rem}.py-4{padding-top:1rem;padding-bottom:1rem}.text-2xl{font-size:1.5rem;line-height:2rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.font-semibold{font-weight:600}.font-medium{font-weight:500}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55 / var(--tw-text-opacity))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99 / var(--tw-text-opacity))}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity))}.decoration-wavy{-webkit-text-decoration-style:wavy;text-decoration-style:wavy}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.hover\:underline:hover{text-decoration:underline}@media (prefers-color-scheme: dark){.dark\:border-blue-400{--tw-border-opacity:1;border-color:rgb(96 165 250 / var(--tw-border-opacity))}.dark\:bg-gray-800{--tw-bg-opacity:1;background-color:rgb(31 41 55 / var(--tw-bg-opacity))}.dark\:text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity))}.dark\:text-gray-200{--tw-text-opacity:1;color:rgb(229 231 235 / var(--tw-text-opacity))}.dark\:text-blue-300{--tw-text-opacity:1;color:rgb(147 197 253 / var(--tw-text-opacity))}}@media (min-width: 768px){.md\:mt-0{margin-top:0px}.md\:justify-end{justify-content:flex-end}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}}</style>
+<style>
+.shadow-lg {
+    background-color: #c3c1c1 !important;
+    margin: 0;
+    height: 105px;
+    max-width: 100%;
+    margin-bottom: 24px;
+    margin-top: 30px;
+}
 
+.shadow-lg img {
+    height: 120px;
+    width: 110px;
+    border-radius: 100px;
+}
+
+[type=button], [type=reset], [type=submit], button {
+    background-color: black !important;
+    color: #fff;
+}
+
+label {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+}
+
+.custom-file-label{
+  font-weight: unset;
+}
+    </style>
 </head>
 
 <body style="background:#fff;">
@@ -31,7 +62,7 @@
             </a>
           </li>
           <li class="sidebar-dropdown">
-            <a href="#">
+            <a href="http://127.0.0.1:5000/edit-profile">
               <i class="fa fa-user"></i>
               <span>My profile</span>
             </a>
@@ -45,20 +76,20 @@
 
           <li class="sidebar-dropdown">
             <a href="http://127.0.0.1:5000/my-tweets">
-              <i class="fa fa-plus"></i>
+              <i class="fa fa-list"></i>
               <span>My Tweets</span>
             </a>
           </li>
           <li class="sidebar-dropdown">
             <a href="#">
-              <i class="fa fa-list"></i>
+              <i class="fa fa-handshake"></i>
               <span>Followers</span>
             </a>
           </li>
 
           <li class="sidebar-dropdown">
             <a href="#">
-              <i class="fa fa-list"></i>
+              <i class="fa fa-users"></i>
               <span>following</span>
             </a>
           </li>
@@ -74,32 +105,51 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-8">
-            {{profile_detail}}
             <form method="POST" action="http://127.0.0.1:5000/edit-profile" enctype="multipart/form-data">
+              <div class="max-w-md px-8 py-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
+                <div class="flex justify-center-start -mt-16">
+                  {% if profile_detail.user_image == "" %}
+                  <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                       src="{{ url_for('static', filename = 'uploaded_images/user.jpg') }}">
+                  {% else %}
+                  <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                       src="{{ url_for('static', filename = 'uploaded_images/') }}{{ profile_detail.user_image }}">
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="uname">User Name</label>
+                <input class="form-control" id="uname"  name="uname" value="{{ profile_detail.user_name }}" disabled>
+              </div>
               <div class="form-group">
                 <label for="email">Email</label>
                 <input class="form-control" id="email"  name="email" placeholder="Enter email" value="{{profile_detail.email}}">
               </div>
+              <div class="form-group">
+                <label for="description1">Description</label>
+                <textarea class="form-control" id="description1" rows="3" name="description" maxlength="280"
+                          placeholder="Write your description here...">{{ profile_detail.description }}</textarea>
+              </div>
 
-              <input type="text" value="{{ profile_detail.image }}"  id="img_value" name="last_image" hidden>
-              <input type="text" value="{{ profile_detail.followers }}"  name="followers" hidden>
-              <input type="text" value="{{ profile_detail.user_name }}"  name="user_name" hidden>
-              <input type="text" value="{{ profile_detail.following }}"  name="following" hidden>
+              <input type="text" value="{{ profile_detail.user_image }}" id="img_value" name="last_image" hidden>
+              <input type="text" value="{{ profile_detail.followers }}" name="followers" hidden>
+              <input type="text" value="{{ profile_detail.user_name }}" name="user_name" hidden>
+              <input type="text" value="{{ profile_detail.following }}" name="following" hidden>
 
               <div class="form-group">
-                <label><strong>Upload Files</strong></label>
+                <label><strong>Upload Profile image</strong></label>
                 <div class="custom-file mb-3">
                   <input type="file" class="custom-file-input" id="customFile" name="image">
-                  <label class="custom-file-label" for="customFile">Choose file</label>
+                  <label class="custom-file-label" for="customFile">Upload Profile image</label>
                 </div>
               </div>
-              <button type="submit" class="btn btn-info">Submit</button>
+              <button type="submit" class="btn">Submit</button>
             </form>
           </div>
         </div>
       </div>
   </main>
-  </div>
+</div>
 </div>
 
 <!-- page-wrapper -->
@@ -109,6 +159,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
     <script>
+      $(document).ready(function(){
+        var fileName = $("#img_value").val();
+        $(".custom-file-input").siblings(".custom-file-label").addClass("selected").html(fileName);
+      });
+
       $(".custom-file-input").on("change", function() {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
