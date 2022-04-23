@@ -12,17 +12,25 @@ def allowed_file(filename):
 
 
 def get_users_list():
-    all_users = db.child("users").get()
+    query = client.query()
+    results = list(query.fetch())
 
-    users_list = []
-    for user in all_users.each():
-        if request_user.get('uid') != user.item[0]:
-            users_list.append({
-                "user_id": user.item[0],
-                "user_name": user.item[1].get("name", "")
-            })
+    data = list()
+    for obj in results:
+        data_dict = dict()
+        for key, value in obj.items():
+            data_dict[key] = value
 
-    return users_list
+        data.append(data_dict)
+
+    users_list = list()
+    for obj in data:
+        if obj.get("profile") == True and obj.get("user_id") and obj.get("user_id") != request_user["uid"]:
+            users_list.append(obj)
+        else:
+            continue
+
+    return list(filter(None, users_list))
 
 
 def get_entities(entity_kind):
@@ -68,9 +76,12 @@ def get_tweets(entity_kind):
 
     user_data = get_profile_details(entity_kind)
 
-    for obj in list(user_data.get("following").replace("'", "")):
-        following_tweets = get_all_tweets(obj.get("user_id"))
-        data.extend(following_tweets)
+    try:
+        for obj in list(filter(None, user_data.get("following"))):
+            following_tweets = get_all_tweets(obj)
+            data.extend(following_tweets)
+    except:
+        pass
 
     final_data = list(filter(None, data))
     random.shuffle(final_data)
