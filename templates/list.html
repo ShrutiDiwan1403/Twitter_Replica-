@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Responsive sidebar template with sliding effect and dropdown menu based on bootstrap 3">
-    <title>Sidebar template</title>
+    <title>My tweets</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
@@ -33,7 +33,7 @@
             </a>
           </li>
           <li class="sidebar-dropdown">
-            <a href="#">
+            <a href="http://127.0.0.1:5000/edit-profile">
               <i class="fa fa-user"></i>
               <span>My profile</span>
             </a>
@@ -47,20 +47,20 @@
 
           <li class="sidebar-dropdown">
             <a href="http://127.0.0.1:5000/my-tweets">
-              <i class="fa fa-plus"></i>
+              <i class="fa fa-list"></i>
               <span>My Tweets</span>
             </a>
           </li>
           <li class="sidebar-dropdown">
             <a href="#">
-              <i class="fa fa-list"></i>
+              <i class="fa fa-handshake"></i>
               <span>Followers</span>
             </a>
           </li>
 
           <li class="sidebar-dropdown">
             <a href="#">
-              <i class="fa fa-list"></i>
+              <i class="fa fa-users"></i>
               <span>following</span>
             </a>
           </li>
@@ -87,7 +87,13 @@
         {% for data in data %}
         <div class="col-md-12 d-flex" style="margin-bottom:30px;  border-bottom: 1px solid #a7a2a2;">
           <div class="img-sec">
-            <img src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="#">
+            {% if profile_details.user_image == "" %}
+              <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                   src="{{ url_for('static', filename = 'uploaded_images/user.jpg') }}">
+              {% else %}
+              <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                   src="{{ url_for('static', filename = 'uploaded_images/') }}{{ profile_details.user_image }}">
+            {% endif %}
           </div>
           <div class="text-sec">
             <div class="d-flex" style="justify-content: space-between;">
