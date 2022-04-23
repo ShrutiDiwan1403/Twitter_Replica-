@@ -429,7 +429,11 @@ a.name:hover {text-decoration: none;}
     height: 300px;
     overflow: hidden;
     overflow-y: scroll;
-    margin-top:10px;
+    margin-tpp:10px;
 }
 
-.sidebar-menu.user-list li a {padding-left: 10px !important;} 
+.sidebar-menu.user-list li a {padding-left: 10px !important;}
+
+.sidebar-dropdown img {
+    width: 38px;
+}
