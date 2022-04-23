@@ -49,8 +49,10 @@ def dashboard():
     if request_user["is_logged_in"]:
         users_data = get_users_list()
         tweets_data = get_tweets(request_user["uid"])
+        profile_details = get_profile_details(request_user["uid"])
         return render_template("dashboard.html", user_id=request_user["uid"], email=request_user["email"],
-                               name=request_user["name"], users_data=users_data, tweets_data=tweets_data)
+                               profile_details=profile_details, name=request_user["name"], users_data=users_data,
+                               tweets_data=tweets_data)
     else:
         return render_template("login.html")
 
@@ -152,7 +154,10 @@ def edit_profile():
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             else:
                 filename = last_image
-            
+
+            followers_list = followers.replace("[", "").replace("]", "").split(",")
+            following_list = following.replace("[", "").replace("]", "").split(",")
+
             # Update profile
             post_id = str(uuid.uuid4())
             key = client.key(request_user["uid"], post_id)
@@ -164,13 +169,12 @@ def edit_profile():
                 "user_image": str(filename),
                 "email": email,
                 "description": description,
-                "followers": followers,
-                "following": following
+                "followers": followers_list,
+                "following": following_list
             })
             client.put(entity)
-
-            # profile_details = get_profile_details(request_user["uid"])
-            # return render_template("my_profile.html", profile_detail=profile_details)
+            profile_details = get_profile_details(request_user["uid"])
+            return render_template("my_profile.html", profile_detail=profile_details)
         else:
             profile_details = get_profile_details(request_user["uid"])
             return render_template("my_profile.html", profile_detail=profile_details)
@@ -189,8 +193,8 @@ def my_tweets():
                 final_data.append(obj)
             else:
                 continue
-
-        return render_template("list.html", data=final_data)
+        profile_details = get_profile_details(request_user["uid"])
+        return render_template("list.html", data=final_data, profile_details=profile_details)
     else:
         return redirect(url_for('login'))
     
