@@ -365,7 +365,7 @@ def show_followers():
 def show_user_profile(user_id):
     if request_user["is_logged_in"]:
         data = get_profile_details(user_id)
-        return render_template("show_user_profile.html", user_detail=data)
+        return render_template("user_profile.html", user_detail=data)
     else:
         return redirect(url_for('login'))
 
