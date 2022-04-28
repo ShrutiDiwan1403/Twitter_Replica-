@@ -24,13 +24,17 @@ def get_users_list():
         data.append(data_dict)
 
     users_list = list()
+    following_list = [i.get("user_id") for i in get_followings(request_user['uid']) if type(i) == dict()]
     for obj in data:
-        if obj.get("profile") == True and obj.get("user_id") and obj.get("user_id") != request_user["uid"]:
+        if obj.get("profile") == True and obj.get("user_id") and obj.get("user_id") != request_user["uid"] and \
+                obj.get("user_id") not in following_list:
             users_list.append(obj)
         else:
             continue
 
-    return list(filter(None, users_list))
+    final = list(filter(None, users_list))
+    final_data = list({v['user_id']: v for v in final}.values())
+    return final_data
 
 
 def get_entities(entity_kind):
@@ -109,7 +113,7 @@ def get_followings(user_id):
 
     for obj in data:
         if obj.get("profile") == True:
-            return obj.get("following")
+            return list(filter(None, obj.get("following")))
 
 
 def get_followers(user_id):
@@ -117,4 +121,12 @@ def get_followers(user_id):
 
     for obj in data:
         if obj.get("profile") == True:
-            return obj.get("followers")
+            following = obj.get("following")
+            followers = list(filter(None, obj.get("followers")))
+            for follower in followers:
+                if follower in following:
+                    follower.update({'is_following': True})
+                else:
+                    continue
+
+            return followers
