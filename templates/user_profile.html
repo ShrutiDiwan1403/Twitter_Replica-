@@ -81,14 +81,14 @@ label {
             </a>
           </li>
           <li class="sidebar-dropdown">
-            <a href="#">
+            <a href="http://127.0.0.1:5000/show-followers">
               <i class="fa fa-handshake"></i>
               <span>Followers</span>
             </a>
           </li>
 
           <li class="sidebar-dropdown">
-            <a href="#">
+            <a href="http://127.0.0.1:5000/show-followings">
               <i class="fa fa-users"></i>
               <span>following</span>
             </a>
@@ -104,7 +104,7 @@ label {
     <main class="page-content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-8">
+          <div class="col-8 ">
               <div class="max-w-md px-8 py-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
                 <div class="flex justify-center-start -mt-16">
                   {% if user_detail.user_image == "" %}
@@ -128,13 +128,13 @@ label {
                 <label>Description</label>
                 <p>{{ user_detail.description }}</p>
               </div>
-              <div class="btn-sec">
+              <div class="btn-sec text-left">
                 <a href="http://127.0.0.1:5000/{{ user_detail.user_id }}/follow-user" class="back log-out">follow</a>
               </div>
           </div>
 
           {% for data in data %}
-            <div class="col-md-12 d-flex" style="margin-bottom:30px;  border-bottom: 1px solid #a7a2a2;">
+            <div class="col-md-12 d-flex" style="margin-bottom:30px; border-top: 1px solid #000; padding-top: 20px;">
               <div class="img-sec">
                 {% if user_detail.user_image == "" %}
                   <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
