@@ -26,8 +26,7 @@ def get_users_list():
     users_list = list()
     following_list = [i.get("user_id") for i in get_followings(request_user['uid']) if type(i) == dict()]
     for obj in data:
-        if obj.get("profile") == True and obj.get("user_id") and obj.get("user_id") != request_user["uid"] and \
-                obj.get("user_id") not in following_list:
+        if obj.get("profile") == True and obj.get("user_id") and obj.get("user_id") != request_user["uid"]:
             users_list.append(obj)
         else:
             continue
