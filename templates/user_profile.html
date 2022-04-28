@@ -105,8 +105,6 @@ label {
       <div class="container-fluid">
         <div class="row">
           <div class="col-8">
-
-
               <div class="max-w-md px-8 py-4 bg-white rounded-lg shadow-lg dark:bg-gray-800">
                 <div class="flex justify-center-start -mt-16">
                   {% if user_detail.user_image == "" %}
@@ -130,15 +128,33 @@ label {
                 <label>Description</label>
                 <p>{{ user_detail.description }}</p>
               </div>
-              <div class="form-group">
-                <label>Followers</label>
-                <p>{{ user_detail.followers }}</p>
-              </div>
-              <div class="form-group">
-                <label>Following</label>
-                <p>{{ user_detail.following }}</p>
+              <div class="btn-sec">
+                <a href="http://127.0.0.1:5000/{{ user_detail.user_id }}/follow-user" class="back log-out">follow</a>
               </div>
           </div>
+
+          {% for data in data %}
+            <div class="col-md-12 d-flex" style="margin-bottom:30px;  border-bottom: 1px solid #a7a2a2;">
+              <div class="img-sec">
+                {% if user_detail.user_image == "" %}
+                  <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                       src="{{ url_for('static', filename = 'uploaded_images/user.jpg') }}">
+                  {% else %}
+                  <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                       src="{{ url_for('static', filename = 'uploaded_images/') }}{{ user_detail.user_image }}">
+                {% endif %}
+              </div>
+
+              <div class="text-sec">
+                <div class="d-flex" style="justify-content: space-between;">
+                  <a href="#" class="name"><b>{{ data.user_name }}</b></a>
+                  <p>{{ data.created_on }}</p>
+                </div>
+                <p>{{ data.description }}</p>
+                <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
+              </div>
+            </div>
+          {% endfor %}
         </div>
       </div>
   </main>
