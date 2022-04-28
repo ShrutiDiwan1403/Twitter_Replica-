@@ -5,8 +5,8 @@ from datetime import date
 from flask import Flask, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
-
 from DB import client, datastore
+from Blob_Storage import upload_blob
 from Auth import auth, db, request_user
 from utils import get_profile_details, get_post_details, get_followers, get_followings, get_users_list, allowed_file, \
     get_tweets, get_entities
@@ -152,6 +152,8 @@ def edit_profile():
             if image_file and allowed_file(image_file.filename) and str(last_image) != str(image_file):
                 filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                source_file = './static/uploaded_images/{}'.format(filename)
+                upload_blob(os.path.abspath(source_file), filename)
             else:
                 filename = last_image
 
@@ -193,6 +195,7 @@ def my_tweets():
                 final_data.append(obj)
             else:
                 continue
+
         profile_details = get_profile_details(request_user["uid"])
         return render_template("list.html", data=final_data, profile_details=profile_details)
     else:
@@ -210,6 +213,8 @@ def create_post():
             if image_file and allowed_file(image_file.filename):
                 filename = secure_filename(image_file.filename)
                 image_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                source_file = './static/uploaded_images/{}'.format(filename)
+                upload_blob(os.path.abspath(source_file), filename)
             else:
                 filename = ""
 
@@ -222,7 +227,8 @@ def create_post():
                 "post_id": post_id,
                 "description": description,
                 "image": str(filename),
-                "created_on": str(today)
+                "created_on": str(today),
+                "edited": False
             })
             client.put(entity)
             return redirect(url_for('dashboard'))
@@ -251,17 +257,18 @@ def edit_post(user_id, post_id):
 
             key = client.key(user_id, post_id)
             entity = datastore.Entity(key=key)
-            print(request.files["image"])
-            print(filename)
+
             entity.update({
                 "user_name": user_name,
                 "user_id": user_id,
                 "post_id": post_id,
                 "description": description,
                 "image": str(filename),
-                "created_on": created_on
+                "created_on": created_on,
+                "edited": True
             })
             client.put(entity)
+
             return redirect(url_for('my_tweets'))
         else:
             post_details = get_post_details(post_id)
@@ -275,28 +282,30 @@ def follow_user(follow_id):
     if request_user["is_logged_in"]:
         request_user_details = get_profile_details(request_user["uid"])
         follow_user_details = get_profile_details(follow_id)
-        
-        request_user_following = request_user_details.get("following")
-        list(set(request_user_following.append({
+
+        request_user_following = request_user_details.get("following", list())
+        request_user_following.append({
             "user_id": follow_user_details.get("user_id"),
             "user_name": follow_user_details.get("user_name")
-        })))
+        })
         
-        follow_user_followers = follow_user_details.get("followers")
-        list(set(follow_user_followers.append({
+        follow_user_followers = follow_user_details.get("followers", list())
+        follow_user_followers.append({
             "user_id": request_user_details.get("user_id"),
             "user_name": request_user_details.get("user_name")
-        })))
-        
+        })
+
         request_user_key = client.key(request_user["uid"], "profile")
         request_user_entity = datastore.Entity(key=request_user_key)
         request_user_entity.update(request_user_details)
         client.put(request_user_entity)
 
-        follow_user_key = client.key(request_user["uid"], "profile")
+        follow_user_key = client.key(follow_id, "profile")
         follow_user_entity = datastore.Entity(key=follow_user_key)
         follow_user_entity.update(follow_user_details)
         client.put(follow_user_entity)
+
+        return render_template("show_followings.html")
     else:
         return redirect(url_for('login'))
 
@@ -307,27 +316,32 @@ def unfollow_user(follow_id):
         request_user_details = get_profile_details(request_user["uid"])
         follow_user_details = get_profile_details(follow_id)
 
-        request_user_following = request_user_details.get("following")
-        list(set(request_user_following.remove({
+        request_user_following = request_user_details.get("following", list())
+        request_user_following.remove({
             "user_id": follow_user_details.get("user_id"),
             "user_name": follow_user_details.get("user_name")
-        })))
+        })
 
-        follow_user_followers = follow_user_details.get("followers")
-        list(set(follow_user_followers.remove({
-            "user_id": request_user_details.get("user_id"),
-            "user_name": request_user_details.get("user_name")
-        })))
+        follow_user_followers = follow_user_details.get("followers", list())
+        try:
+            follow_user_followers.remove({
+                "user_id": request_user_details.get("user_id"),
+                "user_name": request_user_details.get("user_name")
+            })
+        except:
+            pass
 
         request_user_key = client.key(request_user["uid"], "profile")
         request_user_entity = datastore.Entity(key=request_user_key)
         request_user_entity.update(request_user_details)
         client.put(request_user_entity)
 
-        follow_user_key = client.key(request_user["uid"], "profile")
+        follow_user_key = client.key(follow_id, "profile")
         follow_user_entity = datastore.Entity(key=follow_user_key)
         follow_user_entity.update(follow_user_details)
         client.put(follow_user_entity)
+
+        return render_template("show_followings.html")
     else:
         return redirect(url_for('login'))
 
@@ -364,8 +378,21 @@ def show_followers():
 @app.route("/<user_id>/show-user-profile", methods=["GET"])
 def show_user_profile(user_id):
     if request_user["is_logged_in"]:
-        data = get_profile_details(user_id)
-        return render_template("user_profile.html", user_detail=data)
+        data = get_entities(user_id)
+
+        user_data = dict()
+        for obj in data:
+            if obj.get("profile") == True:
+                user_data = obj
+
+        tweets_data = list()
+        for obj in data:
+            if obj.get("post_id"):
+                tweets_data.append(obj)
+            else:
+                continue
+
+        return render_template("user_profile.html", data=tweets_data, user_detail=user_data)
     else:
         return redirect(url_for('login'))
 
