@@ -44,11 +44,30 @@ def signup():
 
 
 # Dashboard
-@app.route("/dashboard")
+@app.route("/dashboard", methods=["POST", "GET"])
 def dashboard():
     if request_user["is_logged_in"]:
+        if request.method == "POST":
+            result = request.form
+            search_query = str(result["search"])
+
+            print("-----------------------------------")
+            print(search_query)
+            
+            data = get_tweets(request_user["uid"])
+            
+            tweets_data = list()
+            for obj in data:
+                if search_query.lower() in str(obj.get("description", "")).lower():
+                    tweets_data.append(obj)
+                elif search_query.lower() in str(obj.get("user_name", "")).lower():
+                    tweets_data.append(obj)
+                else:
+                    continue
+        else:
+            tweets_data = get_tweets(request_user["uid"])
+            
         users_data = get_users_list()
-        tweets_data = get_tweets(request_user["uid"])
         profile_details = get_profile_details(request_user["uid"])
         return render_template("dashboard.html", user_id=request_user["uid"], email=request_user["email"],
                                profile_details=profile_details, name=request_user["name"], users_data=users_data,
