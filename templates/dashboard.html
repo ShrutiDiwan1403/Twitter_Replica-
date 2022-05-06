@@ -76,7 +76,7 @@
         <ul>
           {% for user in users_data %}
           <li class="sidebar-dropdown">
-            <a href="http://127.0.0.1:5000/{{ user.user_id}}/show-user-profile">
+            <a href="http://127.0.0.1:5000/{{ user.user_id}}/show-user-profile" style="width: 270px;">
               {% if user.user_image %}
               <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
                    src="{{ url_for('static', filename = 'uploaded_images/') }}{{ user.user_image }}">
@@ -125,7 +125,7 @@
           <div class="text-sec">
             <div class="d-flex" style="justify-content: space-between;">
               <a href="#" class="name"><b>{{ data.user_name }}</b></a>
-              <p>{{ data.created_on }}</p>
+              <p>{%  if data.edited %}<i class="fas fa-edit mr-3"></i>{% endif %} {{ data.created_on }}</p>
             </div>
             <p>{{ data.description }}</p>
             <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
