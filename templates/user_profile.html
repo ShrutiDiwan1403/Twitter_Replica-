@@ -129,7 +129,11 @@ label {
                 <p>{{ user_detail.description }}</p>
               </div>
               <div class="btn-sec text-left">
-                <a href="http://127.0.0.1:5000/{{ user_detail.user_id }}/follow-user" class="back log-out">follow</a>
+                {% if user_detail.is_following %}
+                    <a href="http://127.0.0.1:5000/{{ user_detail.user_id }}/unfollow-user" class="back log-out" style="width: 150px; padding-right: 10px;margin-left: 380px;">unfollow</a>
+                {% else %}
+                    <a href="http://127.0.0.1:5000/{{ user_detail.user_id }}/follow-user" class="back log-out" style="width: 150px; padding-right: 10px;margin-left: 380px;">follow</a>
+                {% endif %}
               </div>
           </div>
 
