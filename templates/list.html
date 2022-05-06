@@ -98,14 +98,14 @@
           <div class="text-sec">
             <div class="d-flex" style="justify-content: space-between;">
               <a href="#" class="name"><b>{{ data.user_name }}</b></a>
-              <p>{{ data.created_on }}</p>
+              <p>{%  if data.edited %}<i class="fas fa-edit mr-3"></i>{% endif %} {{ data.created_on }}</p>
             </div>
             <p>{{ data.description }}</p>
             <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
             <div class="btn-sec">
-            <a href="http://127.0.0.1:5000/{{ data.user_id }}/edit-post/{{ data.post_id }}" class="back log-out">Edit</a>
-            <a href="http://127.0.0.1:5000/{{ data.post_id }}/delete-post" class="back log-out">Delete</a>
-          </div>
+                <a href="http://127.0.0.1:5000/{{ data.user_id }}/edit-post/{{ data.post_id }}" class="back log-out">Edit</a>
+                <a href="http://127.0.0.1:5000/{{ data.post_id }}/delete-post" class="back log-out">Delete</a>
+            </div>
           </div>
 
         </div>
