@@ -1,7 +1,7 @@
 import os
 from google.cloud import storage
 
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = 'C:\Users\shrut\Downloads\prime-rainfall-340817-72736d19063f.json'
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\Users\shrut\Downloads\prime-rainfall-340817-72736d19063f.json"
 
 
 def upload_blob(source_file_name, destination_blob_name):
