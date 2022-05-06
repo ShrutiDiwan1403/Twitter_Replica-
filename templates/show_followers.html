@@ -78,12 +78,12 @@
       <div class="row">
 
 
-        <div class="sidebar-menu user-list" style="margin-top:10px; width: 100%;">
+        <div class="sidebar-menu" style="margin-top:10px; width: 100%;">
         <h1>Your Followers</h1>
             <hr>
         <ul style="list-style-type: none;padding: 0;">
           {% for user in data %}
-          <li class="sidebar-dropdown">
+          <li class="sidebar-dropdown show-list">
             <a href="http://127.0.0.1:5000/{{ user.user_id}}/show-user-profile" style="text-decoration: none;color: #000;">
               {% if user.user_image %}
               <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
@@ -95,9 +95,9 @@
               <span>{{ user.user_name }}</span>
             </a>
             {% if user.is_following %}
-              <a href="http://127.0.0.1:5000/{{ user.user_id }}/unfollow-user" class="back log-out" style="width: 150px; padding-right: 10px;margin-left: 380px;">unfollow</a>
+              <a href="http://127.0.0.1:5000/{{ user.user_id }}/unfollow-user" class="back log-out" style="width: 150px; padding: 10px;">unfollow</a>
             {% else %}
-                <a href="http://127.0.0.1:5000/{{ user.user_id }}/follow-user" class="back log-out" style="width: 150px; padding-right: 10px;margin-left: 380px;">follow</a>
+                <a href="http://127.0.0.1:5000/{{ user.user_id }}/follow-user" class="back log-out" style="width: 150px; padding: 10px;">follow</a>
             {% endif %}
           </li>
 
