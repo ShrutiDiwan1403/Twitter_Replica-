@@ -437,3 +437,10 @@ a.name:hover {text-decoration: none;}
 .sidebar-dropdown img {
     width: 38px;
 }
+
+.show-list {
+  display: flex;
+  justify-content: space-between;
+  align-self: center;
+  align-items: center;
+}
