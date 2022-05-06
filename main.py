@@ -1,7 +1,7 @@
 import os
 import uuid
+import datetime
 
-from datetime import date
 from flask import Flask, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
 
@@ -17,7 +17,7 @@ UPLOAD_FOLDER = './static/uploaded_images'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-today = date.today()
+today = datetime.date.today()
 
 
 # Login
@@ -51,19 +51,19 @@ def dashboard():
             result = request.form
             search_query = str(result["search"])
 
-            print("-----------------------------------")
-            print(search_query)
-            
-            data = get_tweets(request_user["uid"])
-            
-            tweets_data = list()
-            for obj in data:
-                if search_query.lower() in str(obj.get("description", "")).lower():
-                    tweets_data.append(obj)
-                elif search_query.lower() in str(obj.get("user_name", "")).lower():
-                    tweets_data.append(obj)
-                else:
-                    continue
+            if search_query:
+                data = get_tweets(request_user["uid"])
+
+                tweets_data = list()
+                for obj in data:
+                    if search_query.lower() in str(obj.get("description", "")).lower():
+                        tweets_data.append(obj)
+                    elif search_query.lower() in str(obj.get("user_name", "")).lower():
+                        tweets_data.append(obj)
+                    else:
+                        continue
+            else:
+                tweets_data = get_tweets(request_user["uid"])
         else:
             tweets_data = get_tweets(request_user["uid"])
             
@@ -246,7 +246,7 @@ def create_post():
                 "post_id": post_id,
                 "description": description,
                 "image": str(filename),
-                "created_on": str(today),
+                "created_on": str(datetime.datetime.now()).split('.')[0],
                 "edited": False
             })
             client.put(entity)
@@ -324,7 +324,7 @@ def follow_user(follow_id):
         follow_user_entity.update(follow_user_details)
         client.put(follow_user_entity)
 
-        return render_template("show_followings.html")
+        return redirect(url_for('show_followings'))
     else:
         return redirect(url_for('login'))
 
@@ -360,7 +360,7 @@ def unfollow_user(follow_id):
         follow_user_entity.update(follow_user_details)
         client.put(follow_user_entity)
 
-        return render_template("show_followings.html")
+        return redirect(url_for('show_followings'))
     else:
         return redirect(url_for('login'))
 
@@ -403,6 +403,16 @@ def show_user_profile(user_id):
         for obj in data:
             if obj.get("profile") == True:
                 user_data = obj
+
+        user_id = user_data.get('user_id')
+        logged_in_user = get_profile_details(request_user['uid'])
+        for obj in logged_in_user.get('following'):
+            if user_id == obj.get('user_id'):
+                user_data.update({
+                    'is_following': True
+                })
+            else:
+                continue
 
         tweets_data = list()
         for obj in data:
