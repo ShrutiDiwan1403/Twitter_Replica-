@@ -78,10 +78,10 @@ def get_tweets(entity_kind):
     data.extend(user_tweets)
 
     user_data = get_profile_details(entity_kind)
-
-    for obj in list(filter(None, user_data.get("following", []))):
-        following_tweets = get_all_tweets(obj.get('user_id'))
-        data.extend(following_tweets)
+    if user_data:
+        for obj in list(filter(None, user_data.get("following", []))):
+            following_tweets = get_all_tweets(obj.get('user_id'))
+            data.extend(following_tweets)
 
     final_data = list(filter(None, data))
     random.shuffle(final_data)
