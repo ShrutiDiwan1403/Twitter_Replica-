@@ -109,7 +109,7 @@ def get_followings(user_id):
 
     for obj in data:
         if obj.get("profile") == True:
-            final_data = list({v['user_id']: v for v in obj.get("following")}.values())
+            final_data = list({v['user_id']: v for v in obj.get("following") if type(v) != str()}.values())
             return final_data
 
 
@@ -126,4 +126,5 @@ def get_followers(user_id):
                 else:
                     continue
 
-            return followers
+            final_data = list({v['user_id']: v for v in followers if type(v) != str()}.values())
+            return final_data
