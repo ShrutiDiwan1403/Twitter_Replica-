@@ -421,7 +421,9 @@ def show_user_profile(user_id):
             else:
                 continue
 
-        return render_template("user_profile.html", data=tweets_data, user_detail=user_data)
+        final_tweets_data = tweets_data[::-1]
+
+        return render_template("user_profile.html", data=final_tweets_data[:50], user_detail=user_data)
     else:
         return redirect(url_for('login'))
 
