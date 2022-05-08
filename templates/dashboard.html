@@ -109,8 +109,24 @@
             </form>
         </div>
 
+        {% for search_user in user_search_data %}
+          <li class="sidebar-dropdown show-list">
+            <a href="http://127.0.0.1:5000/{{ search_user.user_id}}/show-user-profile" style="text-decoration: none;color: #000;">
+              {% if search_user.user_image %}
+              <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                   src="{{ url_for('static', filename = 'uploaded_images/') }}{{ search_user.user_image }}">
+              {% else %}
+              <img class="object-cover w-20 h-20 border-2 border-blue-500 rounded-full dark:border-blue-400"
+                   src="{{ url_for('static', filename = 'uploaded_images/user.jpg') }}">
+            {% endif %}
+              <span>{{ search_user.user_name }}</span>
+            </a>
+          </li>
+
+        {% endfor %}
+
         {% for data in tweets_data %}
-        <div class="col-md-12 d-flex" style="margin-bottom:30px;  border-bottom: 1px solid #a7a2a2;">
+        <div class="col-md-12 d-flex" style="margin-bottom:30px;  border-bottom: 1px solid #a7a2a2; padding-bottom:15px;">
           <div class="img-sec">
 
             {% if profile_details.user_image %}
@@ -128,7 +144,9 @@
               <p>{%  if data.edited %}<i class="fas fa-edit mr-3"></i>{% endif %} {{ data.created_on }}</p>
             </div>
             <p>{{ data.description }}</p>
-            <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
+            {% if data.image %}
+              <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
+            {% endif %}
           </div>
 
         </div>
