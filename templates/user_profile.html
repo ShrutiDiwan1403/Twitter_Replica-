@@ -155,7 +155,9 @@ label {
                   <p>{{ data.created_on }}</p>
                 </div>
                 <p>{{ data.description }}</p>
-                <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
+                {% if data.image %}
+                    <div class="img-section"><img src="{{ url_for('static', filename = 'uploaded_images/') }}{{ data.image }}"></div>
+                {% endif %}
               </div>
             </div>
           {% endfor %}
