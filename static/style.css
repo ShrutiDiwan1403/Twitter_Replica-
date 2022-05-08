@@ -429,7 +429,7 @@ a.name:hover {text-decoration: none;}
     height: 300px;
     overflow: hidden;
     overflow-y: scroll;
-    margin-top:10px;
+    margin-tpp:10px;
 }
 
 .sidebar-menu.user-list li a {padding-left: 10px !important;}
@@ -443,4 +443,71 @@ a.name:hover {text-decoration: none;}
   justify-content: space-between;
   align-self: center;
   align-items: center;
+}
+
+@media (max-width: 1400px) {
+
+    .page-wrapper.toggled .page-content {
+        padding-left: 375px;
+    }
+
+    .page-wrapper.toggled .sidebar-wrapper {
+        left: 150px;
+        border-right: 1px solid #cdcaca;
+    }
+
+}
+
+
+@media (max-width: 1199px) {
+
+    .text-sec {
+        display: inline-block;
+        width: 88%;
+        margin-left: 15px;
+    }
+    .page-wrapper.toggled .page-content {
+        padding-left: 335px;
+    }
+    .page-wrapper.toggled .sidebar-wrapper {
+        left: 130px;
+        border-right: 1px solid #cdcaca;
+    }
+
+}
+
+
+@media (max-width: 991px) {
+
+    .page-wrapper.toggled .sidebar-wrapper {
+        left: 100px;
+        border-right: 1px solid #cdcaca;
+    }
+
+    .page-wrapper.toggled .page-content {
+        padding-left: 240px;
+    }
+
+    .text-sec {
+        display: inline-block;
+        width: 88%;
+        margin-left: 30px;
+    }
+    .user-profile-btn a {
+        margin-left: 210px !important;
+    }
+
+}
+
+@media (max-width: 900px) {
+
+    .page-wrapper.toggled .sidebar-wrapper {
+        left: 48px;
+        border-right: 1px solid #cdcaca;
+    }
+
+    .page-wrapper.toggled .page-content {
+        padding-left: 250px;
+    }
+
 }
