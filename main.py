@@ -74,11 +74,10 @@ def dashboard():
         else:
             tweets_data = get_tweets(request_user["uid"])
 
-        final_tweets_data = sorted(tweets_data, key=lambda i: i['created_on'], reverse=True)
         profile_details = get_profile_details(request_user["uid"])
         return render_template("dashboard.html", user_id=request_user["uid"], email=request_user["email"],
                                profile_details=profile_details, name=request_user["name"], users_data=users_data,
-                               tweets_data=final_tweets_data, user_search_data=user_search_data)
+                               tweets_data=tweets_data, user_search_data=user_search_data)
     else:
         return render_template("login.html")
 
