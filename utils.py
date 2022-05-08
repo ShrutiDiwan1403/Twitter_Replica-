@@ -24,7 +24,6 @@ def get_users_list():
         data.append(data_dict)
 
     users_list = list()
-    following_list = [i.get("user_id") for i in get_followings(request_user['uid']) if type(i) == dict()]
     for obj in data:
         if obj.get("profile") == True and obj.get("user_id") and obj.get("user_id") != request_user["uid"]:
             users_list.append(obj)
@@ -78,10 +77,13 @@ def get_tweets(entity_kind):
     data.extend(user_tweets)
 
     user_data = get_profile_details(entity_kind)
-    if user_data:
-        for obj in list(filter(None, user_data.get("following", []))):
-            following_tweets = get_all_tweets(obj.get('user_id'))
-            data.extend(following_tweets)
+    try:
+        if user_data:
+            for obj in list(filter(None, user_data.get("following", []))):
+                following_tweets = get_all_tweets(obj.get('user_id'))
+                data.extend(following_tweets)
+    except:
+        pass
 
     final_data = list(filter(None, data))
     random.shuffle(final_data)
@@ -109,7 +111,7 @@ def get_followings(user_id):
 
     for obj in data:
         if obj.get("profile") == True:
-            final_data = list({v['user_id']: v for v in obj.get("following") if type(v) != str()}.values())
+            final_data = list({v['user_id']: v for v in obj.get("following") if type(v) != str}.values())
             return final_data
 
 
@@ -120,11 +122,12 @@ def get_followers(user_id):
         if obj.get("profile") == True:
             following = obj.get("following")
             followers = list(filter(None, obj.get("followers")))
+
             for follower in followers:
-                if follower in following:
+                if follower in following and type(follower) != str:
                     follower.update({'is_following': True})
                 else:
                     continue
 
-            final_data = list({v['user_id']: v for v in followers if type(v) != str()}.values())
-            return final_data
+            # final_data = list({v['user_id']: v for v in followers if type(v) != str()}.values())
+            return followers

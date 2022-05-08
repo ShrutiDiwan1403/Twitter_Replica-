@@ -1,6 +1,7 @@
 import os
 import uuid
 import datetime
+import time
 
 from flask import Flask, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -302,27 +303,27 @@ def follow_user(follow_id):
         request_user_details = get_profile_details(request_user["uid"])
         follow_user_details = get_profile_details(follow_id)
 
-        request_user_following = request_user_details.get("following", list())
+        request_user_following = request_user_details.get("following")
         request_user_following.append({
             "user_id": follow_user_details.get("user_id"),
             "user_name": follow_user_details.get("user_name")
         })
         
-        follow_user_followers = follow_user_details.get("followers", list())
+        follow_user_followers = follow_user_details.get("followers")
         follow_user_followers.append({
             "user_id": request_user_details.get("user_id"),
             "user_name": request_user_details.get("user_name")
         })
 
-        request_user_key = client.key(request_user["uid"], "profile")
-        request_user_entity = datastore.Entity(key=request_user_key)
-        request_user_entity.update(request_user_details)
-        client.put(request_user_entity)
-
         follow_user_key = client.key(follow_id, "profile")
         follow_user_entity = datastore.Entity(key=follow_user_key)
         follow_user_entity.update(follow_user_details)
         client.put(follow_user_entity)
+
+        request_user_key = client.key(request_user["uid"], "profile")
+        request_user_entity = datastore.Entity(key=request_user_key)
+        request_user_entity.update(request_user_details)
+        client.put(request_user_entity)
 
         return redirect(url_for('show_followings'))
     else:
@@ -407,12 +408,15 @@ def show_user_profile(user_id):
         user_id = user_data.get('user_id')
         logged_in_user = get_profile_details(request_user['uid'])
         for obj in logged_in_user.get('following'):
-            if user_id == obj.get('user_id'):
-                user_data.update({
-                    'is_following': True
-                })
-            else:
-                continue
+            try:
+                if user_id == obj.get('user_id'):
+                    user_data.update({
+                        'is_following': True
+                    })
+                else:
+                    continue
+            except:
+                pass
 
         tweets_data = list()
         for obj in data:
