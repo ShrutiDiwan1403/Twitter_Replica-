@@ -1,7 +1,6 @@
 import os
 import uuid
 import datetime
-import time
 
 from flask import Flask, redirect, render_template, request, url_for
 from werkzeug.utils import secure_filename
@@ -48,6 +47,9 @@ def signup():
 @app.route("/dashboard", methods=["POST", "GET"])
 def dashboard():
     if request_user["is_logged_in"]:
+        users_data = get_users_list()
+        user_search_data = list()
+
         if request.method == "POST":
             result = request.form
             search_query = str(result["search"])
@@ -59,20 +61,23 @@ def dashboard():
                 for obj in data:
                     if search_query.lower() in str(obj.get("description", "")).lower():
                         tweets_data.append(obj)
-                    elif search_query.lower() in str(obj.get("user_name", "")).lower():
-                        tweets_data.append(obj)
+                    else:
+                        continue
+
+                for obj in users_data:
+                    if search_query.lower() in str(obj.get('user_name', '')).lower():
+                        user_search_data.append(obj)
                     else:
                         continue
             else:
                 tweets_data = get_tweets(request_user["uid"])
         else:
             tweets_data = get_tweets(request_user["uid"])
-            
-        users_data = get_users_list()
+
         profile_details = get_profile_details(request_user["uid"])
         return render_template("dashboard.html", user_id=request_user["uid"], email=request_user["email"],
                                profile_details=profile_details, name=request_user["name"], users_data=users_data,
-                               tweets_data=tweets_data)
+                               tweets_data=tweets_data, user_search_data=user_search_data)
     else:
         return render_template("login.html")
 
